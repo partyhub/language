@@ -1,16 +1,17 @@
-import 'dart:collection';
-import 'dart:convert';
+import 'dart:html' as html;
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lan_tools/table_1.dart';
-import 'dart:html' as html;
 
 import 'Toast.dart';
 
 class PageServer extends StatefulWidget{
+
+  PageServer({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return PageServerState();
@@ -100,6 +101,31 @@ class PageServerState extends State<PageServer>{
 
 
   _onLanSaveCallback(String key, List<ArchiveFile> files) {
+    archiveFiles = files;
+    print("_onLanSaveCallback- key-> $key");
+    print("_onLanSaveCallback- files-> ${files.toString()}");
+    for(int i=0;i<archive.length;i++){
+      ArchiveFile archiveFile = archive[i];
+      for(ArchiveFile af in files){
+        if(af.name == archiveFile.name){
+          archive.files[i] = af;
+        }
+      }
+    }
+  }
 
+  void save(){
+    List<int> encodeZip = ZipEncoder().encode(archive);
+    final blob = html.Blob([encodeZip]);
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    DateTime now = DateTime.now();
+    String nowTime = "${now.year}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')}";
+
+    final anchor = html.document.createElement('a') as html.AnchorElement
+      ..href = url
+      ..style.display = 'none'
+      ..download = 'trans_server_$nowTime.zip';
+    html.document.body.children.add(anchor);
+    anchor.click();
   }
 }

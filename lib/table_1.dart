@@ -181,7 +181,6 @@ class _State extends State<Lan1Table> {
                       )),
                       RaisedButton(
                           onPressed: () async {
-                            dialogLoadingController.show(context: context);
                             table.notifyItem(_editIndex, _editLan);
                             _save();
                           },
@@ -402,11 +401,13 @@ class _State extends State<Lan1Table> {
         }
       }
     }
+
     if (widget.onLanSaveCallback != null) {
       widget.onLanSaveCallback(widget.moduleName, widget.files);
     }
 
     dialogLoadingController.close();
+
   }
 }
 
@@ -686,6 +687,9 @@ class _LanServerState extends State<LanServerTable> {
       widget.onLanSaveCallback('', widget.files);
     }
 
-    dialogLoadingController.close();
+    Future.delayed(Duration(seconds: 1)).then((dynamic val) {
+      dialogLoadingController.close();
+    });
+
   }
 }

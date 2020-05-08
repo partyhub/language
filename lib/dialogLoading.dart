@@ -17,9 +17,12 @@ class DialogLoadingController {
   }
 
   close() {
-    if (this?.key?.currentState?.isShowing == true && context != null && Navigator.canPop(context)) {
+    print('dialog-->close--1-->'+(this?.key?.currentState?.isShowing == true).toString());
+    print('dialog-->close--2-->'+(context != null).toString());
+    if (this?.key?.currentState?.isShowing == true && context != null) {
       this._key = null;
       Navigator.of(this.context).pop();
+      print('dialog-->close--->');
     }
   }
 
@@ -106,12 +109,14 @@ class _DialogLoadingState extends State<DialogLoading> {
     super.initState();
     this._label = this.widget.label;
     isShowing = true;
+    print('dialog-->isShow--->'+isShowing.toString());
   }
 
   @override
   void dispose() {
     isShowing = false;
     super.dispose();
+    print('dialog-->isShow--->'+isShowing.toString());
   }
 
   setLabel(String label) {

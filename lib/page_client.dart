@@ -188,10 +188,13 @@ class PageClientState extends State<PageClient> with SingleTickerProviderStateMi
     List<int> encodeZip = ZipEncoder().encode(archive);
     final blob = html.Blob([encodeZip]);
     final url = html.Url.createObjectUrlFromBlob(blob);
+    DateTime now = DateTime.now();
+    String nowTime = "${now.year}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')}";
+
     final anchor = html.document.createElement('a') as html.AnchorElement
       ..href = url
       ..style.display = 'none'
-      ..download = 'trans_edit.zip';
+      ..download = 'trans_client_$nowTime.zip';
     html.document.body.children.add(anchor);
     anchor.click();
   }

@@ -1,5 +1,3 @@
-import 'package:archive/archive.dart';
-import 'package:archive/archive_io.dart';
 import 'package:flutter/material.dart';
 import 'package:lan_tools/page_client.dart';
 import 'package:lan_tools/page_server.dart';
@@ -37,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextStyle _selectStyle,_unselectStyle;
   PageController _pageController;
   GlobalKey<PageClientState> _globalKey = GlobalKey();
+  GlobalKey<PageServerState> _serverlKey = GlobalKey();
 
   @override
   void initState() {
@@ -91,7 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: <Widget>[
           FlatButton.icon(onPressed: (){
-            _globalKey.currentState.save();
+            if(_selectPlatform == 0) _globalKey.currentState.save();
+            else _serverlKey.currentState.save();
           },
               icon: Icon(Icons.file_download,size: 24,color: Colors.white,),
               label: Text("Export",style: _selectStyle,))
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
           PageClient(
             key: _globalKey,
           ),
-          PageServer()
+          PageServer(key: _serverlKey)
         ],
       )
     );
